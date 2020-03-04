@@ -130,6 +130,7 @@ def align_info(line, rlendict):
 
 # Parse SV breakpoints
 def breakpoint_parser(out, minlen, sig_index, seed):
+    debug_out = open('nanovar_debug.txt', 'w')
     final = []
     ran = "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     ran_len = 5
@@ -208,7 +209,10 @@ def breakpoint_parser(out, minlen, sig_index, seed):
             bp_uname = "".join(random.sample(ran, ran_len))
             chrom = out.split('\t')[6].split(' ')[1].split(',')[int(del_count - del_counter)].split(':')[0]
             coord1 = int(out.split('\t')[6].split(' ')[1].split(',')[int(del_count - del_counter)].split(':')[1].split('-')[0])
-            coord2 = int(out.split('\t')[6].split(' ')[1].split(',')[int(del_count - del_counter)].split(':')[1].split('-')[1])
+            try:
+                coord2 = int(out.split('\t')[6].split(' ')[1].split(',')[int(del_count - del_counter)].split(':')[1].split('-')[1])
+            except IndexError:
+                debug_out.write(out)
             del_size = out.split('\t')[6].split(' ')[0].split(',')[int(del_count - del_counter)].split('l')[1]
             pair = '.'
             uniqidx = bp_uname + '~' + str(chrom) + ':' + str(min(coord1, coord2)) + '-' + str(max(coord1, coord2))
@@ -410,6 +414,7 @@ def breakpoint_parser(out, minlen, sig_index, seed):
             inter_tx_counter = inter_tx_counter - 1
         else:
             raise Exception("Error: Unidentifiable SV")
+    debug_out.close()
     return final
 
 
