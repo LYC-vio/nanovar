@@ -96,7 +96,11 @@ def main():
     # Assign threads
     spin_switch, threads_mm, threads_bt, threads_index = assign_threads(force, threads, quiet, ref_path, wk_dir, ref_name)
 
-    # spin_switch = False
+    spin_switch = False
+    threads_index = 0
+    force = True
+    debug = True
+    print("NanoVar debug branch")
 
     # Print initiation message
     now = datetime.now()
@@ -267,6 +271,7 @@ def main():
                         total_gsize, contig_len_dict, score_threshold, file_path, input_name, ref_path, ref_name, mma[0],
                         mincov, homo_t, het_t, debug)
     run.bam_parse_detect()
+    sys.exit()
     run.coverage_stats()
 
     logging.info('Total number of mapped reads: %s\n' % str(run.maps))
